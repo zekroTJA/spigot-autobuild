@@ -28,7 +28,7 @@ $ docker run \
     -e XMS=2G \
     -e XMX=4G \
     -d \
-    spigot-dockerized:1.13.2
+    spigot-autobuild:latest
 ```
 
 Or, if you are using docker-compose:
