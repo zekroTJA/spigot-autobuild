@@ -16,3 +16,5 @@ java -jar ./BuildTools.jar --rev $MC_VERSION
 mv ./spigot-*.jar $ORIGIN/spigot.jar
 
 cd $ORIGIN
+
+rm -r -f $WDIR

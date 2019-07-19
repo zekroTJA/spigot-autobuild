@@ -32,5 +32,7 @@ ADD ./scripts ./scripts
 RUN dos2unix ./scripts/*.sh
 RUN chmod +x ./scripts/*.sh
 
+EXPOSE 25565 25575
+
 CMD ./scripts/build.sh &&\
     ./scripts/run.sh
