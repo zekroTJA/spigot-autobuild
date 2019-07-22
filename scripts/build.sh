@@ -5,7 +5,7 @@ WDIR=/tmp/build
 
 set -e
 
-mkdir $WDIR
+mkdir $WDIR || true
 cd $WDIR
 
 curl https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar \
