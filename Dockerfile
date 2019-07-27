@@ -17,7 +17,8 @@ RUN apt-get update -y &&\
     apt-get install -y \
     curl \
     git \
-    dos2unix
+    dos2unix \
+    jq
 
 RUN mkdir -p /var/mcserver &&\
     mkdir -p /etc/mcserver/worlds &&\
