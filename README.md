@@ -25,6 +25,7 @@ $ docker run \
     -v /home/mc/worlds:/etc/mcserver/worlds \
     -v /home/mc/locals:/etc/mcserver/locals \
     -e MC_VERSION=1.14.3 \
+    -e BUILD_CACHING=true \
     -e XMS=2G \
     -e XMX=4G \
     -d \
@@ -43,6 +44,7 @@ services:
     restart: always
     environment:
       - 'MC_VERSION=1.14.3'
+      - 'BUILD_CACHING=true'
       - 'XMS=2G'
       - 'XMX=4G'
     ports:
@@ -55,6 +57,10 @@ services:
       - './spigot/locals:/etc/mcserver/locals'
 
 ```
+
+## Build Caching?
+
+Defaultly, `BUILD_CACHING` is enabled which builds the `spigot.jar` on first startup and saves the commit hash of this build in a save file inside the container. Next time you start the container, the saved hash will be compared with the has of the latest available version. Only if they differ, a new build will be started. Else, the previously built `spigot.jar` inside the container will be used.
 
 ## Build It Yourself
 
