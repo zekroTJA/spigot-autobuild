@@ -7,8 +7,6 @@ set -e
 
 SPIGOT_REF=$(curl https://hub.spigotmc.org/versions/latest.json | jq -r '.refs.Spigot')
 
-ls -lisah
-
 [ -f spigot_ref.txt ] &&\
     [ "$(cat spigot_ref.txt)" == "$SPIGOT_REF" ] &&\
     exit 0
