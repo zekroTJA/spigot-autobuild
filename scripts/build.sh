@@ -10,7 +10,7 @@ source ./scripts/utils.sh
 is_true "$BUILD_CACHING" && {
     printf "\n[${CYAN} INFO ${RESET}] BUILD CACHING IS ACTIVATED\n\n"
 
-    SPIGOT_REF=$(curl https://hub.spigotmc.org/versions/latest.json | jq -r '.refs.Spigot')
+    SPIGOT_REF=$(curl https://hub.spigotmc.org/versions/${MC_VERSION}.json | jq -r '.refs.Spigot')
 
     [ -f spigot_ref.txt ] &&\
         [ "$(cat spigot_ref.txt)" == "$SPIGOT_REF" ] && {
