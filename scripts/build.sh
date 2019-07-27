@@ -5,13 +5,23 @@ WDIR=/tmp/build
 
 set -e
 
-SPIGOT_REF=$(curl https://hub.spigotmc.org/versions/latest.json | jq -r '.refs.Spigot')
+source ./scripts/utils.sh
 
-[ -f spigot_ref.txt ] &&\
-    [ "$(cat spigot_ref.txt)" == "$SPIGOT_REF" ] &&\
-    exit 0
+is_true "$BUILD_CACHING" && {
+    printf "\n[${CYAN} INFO ${RESET}] BUILD CACHING IS ACTIVATED\n\n"
 
-echo $SPIGOT_REF > spigot_ref.txt
+    SPIGOT_REF=$(curl https://hub.spigotmc.org/versions/latest.json | jq -r '.refs.Spigot')
+
+    [ -f spigot_ref.txt ] &&\
+        [ "$(cat spigot_ref.txt)" == "$SPIGOT_REF" ] && {
+            printf "\n[${CYAN} INFO ${RESET}] VERSION UP TO DATE (${PURPLE}${SPIGOT_REF}${RESET}) - USING CACHED BUILD\n\n"
+            exit 0
+        }
+    
+    echo $SPIGOT_REF > spigot_ref.txt
+
+    printf "\n[${CYAN} INFO ${RESET}] CACHED BUILD OUTDATED - BUILDING LATEST VERSION\n\n"
+}
 
 mkdir $WDIR || true
 cd $WDIR

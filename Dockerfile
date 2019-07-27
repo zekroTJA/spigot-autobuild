@@ -10,6 +10,7 @@ ENV MC_VERSION="latest"
 ENV XMS="1G"
 ENV XMX="2G"
 ENV JVM_PARAMS=""
+ENV BUILD_CACHING="true"
 
 #################################################
 
