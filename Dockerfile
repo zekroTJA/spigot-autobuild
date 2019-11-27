@@ -6,26 +6,36 @@ LABEL description="Minecraft spigot dockerized autobuilding latest version on st
 
 ### VARIABLES ###################################
 
-ENV MC_VERSION="latest"
-ENV XMS="1G"
-ENV XMX="2G"
-ENV JVM_PARAMS=""
-ENV BUILD_CACHING="true"
+ENV MC_VERSION="latest" \
+    XMS="1G" \
+    XMX="2G" \
+    JVM_PARAMS="" \
+    BUILD_CACHING="true"
 
 #################################################
 
 RUN apt-get update -y &&\
     apt-get install -y \
-    curl \
-    git \
-    dos2unix \
-    jq
+      curl \
+      git \
+      dos2unix \
+      jq
 
 RUN mkdir -p /var/mcserver &&\
     mkdir -p /etc/mcserver/worlds &&\
     mkdir -p /etc/mcserver/plugins &&\
     mkdir -p /etc/mcserver/config &&\
     mkdir -p /etc/mcserver/locals
+
+
+WORKDIR /tmp/rcon-cli-install
+RUN curl -Lo rcon-cli.tgz \
+      https://github.com/itzg/rcon-cli/releases/download/1.4.7/rcon-cli_1.4.7_linux_amd64.tar.gz &&\
+    tar -xzf rcon-cli.tgz &&\
+    cp rcon-cli /usr/bin/rcon &&\
+    chmod +x /usr/bin/rcon &&\
+    rm -rf ./*
+
 
 WORKDIR /var/mcserver
 
