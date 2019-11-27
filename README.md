@@ -71,3 +71,22 @@ $ git clone https://github.com/zekroTJA/spigot-autobuild --branch master --depth
 $ cd spigot-autobuild
 $ docker build . -t zekro/spigot-autobuild:latest
 ```
+
+## RCON CLI
+
+Included in the image, there is a RCON cli client which you can use to connect to the servers console or execute server commands from outside the container.
+
+This image uses [itzg's rcon-cli](https://github.com/itzg/rcon-cli). Please take a look at his repository and give him a star for this wonderful project. ;)
+
+Commands can be executed as following:
+```
+# docker exec <container> rcon --port 25575 --password <rcon_pw> <server_command>
+```
+*Of course, you need to configure the RCON server in your `server.properties` before.*
+
+If you need further information about how to use the rcon-cli, please take a look at the [official documentation](https://github.com/itzg/rcon-cli#usage) of this tool.
+
+---
+
+© 2019 Ringo Hoffmann (zekro Development)  
+Corvered by the MIT Licence.
