@@ -74,17 +74,29 @@ $ docker build . -t zekro/spigot-autobuild:latest
 
 ## RCON CLI
 
-Included in the image, there is a RCON cli client which you can use to connect to the servers console or execute server commands from outside the container.
+Included in the Docker image is an RCON cli which can be used from insde the container to control the server without attaching to the servers stdin.
 
-This image uses [itzg's rcon-cli](https://github.com/itzg/rcon-cli). Please take a look at his repository and give him a star for this wonderful project. ;)
-
-Commands can be executed as following:
+To use RCON, you need to set following values in the `server.properties`:
+```cfg
+enable-rcon=true
+rcon.password=7mxQ8Br2QBsFFn2n
+rcon.port=25575
 ```
-# docker exec <container> rcon --port 25575 --password <rcon_pw> <server_command>
-```
-*Of course, you need to configure the RCON server in your `server.properties` before.*
 
-If you need further information about how to use the rcon-cli, please take a look at the [official documentation](https://github.com/itzg/rcon-cli#usage) of this tool.
+Then, you can use the RCON cli like follwoing:
+
+```
+$ docker exec <container> rcon <server_command>
+```
+
+As you can see, you do not need to pass the password or port of the RCON connection. The tool automatically recognizes the location of the `server.properties` file and takes the password and address configuration from there.
+
+Alternatively, when you really want to use the raw cli with no prepared presets, use the following command:
+```
+$ docker exec <container> rconcli -a loalhost:25575 -p <rcon_password> <server_command>
+```
+
+If you are further interested in the usage and details of the RCON cli, take a look [**here of the Github project**](https://github.com/zekroTJA/rconclient).
 
 ---
 

@@ -1,8 +1,22 @@
-FROM openjdk:11.0.3-jdk-stretch
+FROM python:3.7-stretch as build
 
-LABEL maintainer="zekro <contact@zekro.de>"
-LABEL version="1.0.0"
-LABEL description="Minecraft spigot dockerized autobuilding latest version on startup"
+WORKDIR /build/rcon
+
+RUN git clone https://github.com/zekroTJA/rconclient \
+      --branch master --depth 1 .
+RUN python3 -m pip install -r requirements.txt &&\
+    python3 -m pip install pyinstaller
+RUN pyinstaller rconclient/main.py --onefile
+
+
+FROM openjdk:11.0.3-jdk-stretch as final
+
+LABEL maintainer="zekro <contact@zekro.de>" \
+      version="1.0.0" \
+      description="Minecraft spigot dockerized autobuilding latest version on startup"
+
+COPY --from=build /build/rcon/dist/main /usr/bin/rconcli
+RUN chmod +x /usr/bin/rconcli
 
 ### VARIABLES ###################################
 
@@ -27,22 +41,13 @@ RUN mkdir -p /var/mcserver &&\
     mkdir -p /etc/mcserver/config &&\
     mkdir -p /etc/mcserver/locals
 
-
-WORKDIR /tmp/rcon-cli-install
-RUN curl -Lo rcon-cli.tgz \
-      https://github.com/itzg/rcon-cli/releases/download/1.4.7/rcon-cli_1.4.7_linux_amd64.tar.gz &&\
-    tar -xzf rcon-cli.tgz &&\
-    cp rcon-cli /usr/bin/rcon &&\
-    chmod +x /usr/bin/rcon &&\
-    rm -rf ./*
-
-
 WORKDIR /var/mcserver
 
 ADD ./scripts ./scripts
+ADD ./bin/rcon /usr/bin/rcon
 
-RUN dos2unix ./scripts/*.sh
-RUN chmod +x ./scripts/*.sh
+RUN dos2unix ./scripts/*.sh /usr/bin/rcon
+RUN chmod +x ./scripts/*.sh /usr/bin/rcon
 
 EXPOSE 25565 25575
 
