@@ -10,7 +10,7 @@ In contrast to [spigot-dockerized](https://github.com/zekroTJA/spigot-dockerized
 ## How To Use
 
 You can pull the image from [dockerhub](https://hub.docker.com/r/zekro/spigot-autobuild) or [build it yourself](#build-it-yourself).
-
+Choose the [right version](#version-selection) for your minecraft version.
 ```
 $ docker pull zekro/spigot-autobuild:latest
 ```
@@ -57,6 +57,28 @@ services:
       - './spigot/locals:/etc/mcserver/locals'
 
 ```
+
+## Version Selection
+The version 1.16 is not available, but all other patch versions from the 1.16 are available. So `1.16.1`, `1.16.2`, `1.16.3`...  
+Version `1.17` (not `1.17.X`) is only executable with Java 16, which is not supported in this project.
+### JDK-8
+- 1.9
+- 1.10
+- 1.11
+- 1.12
+- 1.13
+- 1.14
+- 1.15
+- 1.16(.1)
+
+### JDK-11
+- 1.13
+- 1.14
+- 1.15
+- 1.16(.1)
+
+### JDK-17
+- 1.17.1
 
 ## Build Caching?
 
