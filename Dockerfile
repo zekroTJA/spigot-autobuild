@@ -1,4 +1,7 @@
-FROM python:3.7-stretch as build
+ARG JDK_VERSION="17"
+ARG PYTHON_VERSION_TAG="3.7-stretch"
+
+FROM python:${PYTHON_VERSION_TAG} as build
 
 WORKDIR /build/rcon
 
@@ -8,8 +11,7 @@ RUN python3 -m pip install -r requirements.txt &&\
     python3 -m pip install pyinstaller
 RUN pyinstaller rconclient/main.py --onefile
 
-
-FROM openjdk:17-jdk-bullseye as final
+FROM openjdk:${JDK_VERSION}-jdk-bullseye AS final
 
 LABEL maintainer="zekro <contact@zekro.de>" \
       version="2.0.0" \
