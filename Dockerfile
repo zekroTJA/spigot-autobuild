@@ -12,7 +12,7 @@ RUN pyinstaller rconclient/main.py --onefile
 FROM openjdk:11.0.3-jdk-stretch as final
 
 LABEL maintainer="zekro <contact@zekro.de>" \
-      version="1.0.0" \
+      version="2.0.0" \
       description="Minecraft spigot dockerized autobuilding latest version on startup"
 
 COPY --from=build /build/rcon/dist/main /usr/bin/rconcli
