@@ -9,7 +9,7 @@ RUN python3 -m pip install -r requirements.txt &&\
 RUN pyinstaller rconclient/main.py --onefile
 
 
-FROM openjdk:11-jdk as final
+FROM openjdk:17-jdk-bullseye as final
 
 LABEL maintainer="zekro <contact@zekro.de>" \
       version="2.0.0" \
