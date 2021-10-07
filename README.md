@@ -9,7 +9,8 @@ In contrast to [spigot-dockerized](https://github.com/zekroTJA/spigot-dockerized
 
 ## How To Use
 
-You can pull the image from [dockerhub](https://hub.docker.com/r/zekro/spigot-autobuild) or [build it yourself](#build-it-yourself).
+You can pull the image from [dockerhub](https://hub.docker.com/r/zekro/spigot-autobuild) or [build it yourself](#build-it-yourself).  
+The `latest` image is also always the master branch and uses the latest LTS JDK version.
 Choose the [right version](#version-selection) for your minecraft version.
 ```
 $ docker pull zekro/spigot-autobuild:latest
