@@ -10,7 +10,7 @@ In contrast to [spigot-dockerized](https://github.com/zekroTJA/spigot-dockerized
 ## How To Use
 
 You can pull the image from [dockerhub](https://hub.docker.com/r/zekro/spigot-autobuild) or [build it yourself](#build-it-yourself).  
-The `latest` image is also always the master branch and uses the latest LTS JDK version.
+The `latest` image is also always the master branch and uses the latest LTS JDK version by default.
 Choose the [right version](#version-selection) for your minecraft version.
 ```
 $ docker pull zekro/spigot-autobuild:latest
@@ -60,11 +60,11 @@ services:
 ```
 
 ## Version Selection
-### Branches and Docker Hub Tags
-Branches and tags are named the same. To build a Minecraft version that requires the JDK-8, the branch `jdk8` must be used. This branch is also available as a  image on Docker Hub under `spigot-autobuild:jdk8`.
+### Docker Hub Tags
+To build a Minecraft version that requires the JDK-8, the build argument `JDK_VERSION: 8` must be used. This Version is also available as a image on Docker Hub under `spigot-autobuild:jdk8`.
 
 The version 1.16 is not available, but all other patch versions from the 1.16 are available. So `1.16.1`, `1.16.2`, `1.16.3`...  
-Version `1.17` (not `1.17.X`) is only executable with Java 16, which is not supported in this project.
+Version `1.17` (not `1.17.X`) is only executable with Java 16 (no LTS).
 ### JDK-8
 - 1.9
 - 1.10
@@ -75,20 +75,20 @@ Version `1.17` (not `1.17.X`) is only executable with Java 16, which is not supp
 - 1.15
 - 1.16(.1)
 
-Branch: `jdk8`
 
 ### JDK-11
 - 1.13
 - 1.14
 - 1.15
 - 1.16(.1)
-  
-Branch: `jdk11`
+
+### JDK-16
+- 1.17
+- 1.17.1
 
 ### JDK-17
 - 1.17.1
 
-Branch: `jdk17`
 ## Build Caching?
 
 Defaultly, `BUILD_CACHING` is enabled which builds the `spigot.jar` on first startup and saves the commit hash of this build in a save file inside the container. Next time you start the container, the saved hash will be compared with the has of the latest available version. Only if they differ, a new build will be started. Else, the previously built `spigot.jar` inside the container will be used.
