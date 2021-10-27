@@ -9,8 +9,9 @@ In contrast to [spigot-dockerized](https://github.com/zekroTJA/spigot-dockerized
 
 ## How To Use
 
-You can pull the image from [dockerhub](https://hub.docker.com/r/zekro/spigot-autobuild) or [build it yourself](#build-it-yourself).
-
+You can pull the image from [dockerhub](https://hub.docker.com/r/zekro/spigot-autobuild) or [build it yourself](#build-it-yourself).  
+The `latest` image is also always the master branch and uses the latest LTS JDK version by default.
+Choose the [right version](#version-selection) for your minecraft version.
 ```
 $ docker pull zekro/spigot-autobuild:latest
 ```
@@ -57,6 +58,36 @@ services:
       - './spigot/locals:/etc/mcserver/locals'
 
 ```
+
+## Version Selection
+### Docker Hub Tags
+To build a Minecraft version that requires the JDK-8, the build argument `JDK_VERSION: 8` must be used. This Version is also available as a image on Docker Hub under `spigot-autobuild:jdk8`.
+
+The version 1.16 is not available, but all other patch versions from the 1.16 are available. So `1.16.1`, `1.16.2`, `1.16.3`...  
+Version `1.17` (not `1.17.X`) is only executable with Java 16 (no LTS).
+### JDK-8
+- 1.9
+- 1.10
+- 1.11
+- 1.12
+- 1.13
+- 1.14
+- 1.15
+- 1.16(.1)
+
+
+### JDK-11
+- 1.13
+- 1.14
+- 1.15
+- 1.16(.1)
+
+### JDK-16
+- 1.17
+- 1.17.1
+
+### JDK-17
+- 1.17.1
 
 ## Build Caching?
 
