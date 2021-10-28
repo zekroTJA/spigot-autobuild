@@ -1,0 +1,41 @@
+name: Docker Autobuild
+on:
+  workflow_dispatch:
+  schedule:
+      - cron: "0 0 1 * *"
+  push:
+    branches:
+      - "master"
+    paths-ignore:
+      - "**.md"
+
+jobs:
+  docker:
+    name: Docker Autobuild
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        jdkversion:
+          - "8"
+          - "11"
+          - "16"
+          - "17"
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Log in to ghcr
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build & Push
+        uses: docker/build-push-action@v2
+        with:
+          context: ./
+          push: true
+          no-cache: true
+          build-args: |-
+            JDK_VERSION=${{ matrix.jdkversion }}
+          tags: |-
+            ghcr.io/zekrotja/spigot-autobuild:jdk-${{ matrix.jdkversion }}
