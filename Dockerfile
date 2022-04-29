@@ -28,6 +28,9 @@ ENV MC_VERSION="latest" \
     JVM_PARAMS="" \
     BUILD_CACHING="true"
 
+ENV BACKUP_FILE_FORMAT="+%Y-%m-%d-%H-%M-%S"
+ENV MAX_AGE_BACKUP_FILES="30d"
+
 #################################################
 
 RUN apt-get update -y &&\
@@ -35,7 +38,9 @@ RUN apt-get update -y &&\
       curl \
       git \
       dos2unix \
-      jq
+      jq \
+      zip \ 
+      rclone
 
 RUN mkdir -p /var/mcserver &&\
     mkdir -p /etc/mcserver/worlds &&\
@@ -53,5 +58,6 @@ RUN chmod +x ./scripts/*.sh /usr/bin/rcon
 
 EXPOSE 25565 25575
 
-CMD ./scripts/build.sh &&\
+CMD ./scripts/backup.sh &&\
+    ./scripts/build.sh &&\
     ./scripts/run.sh
