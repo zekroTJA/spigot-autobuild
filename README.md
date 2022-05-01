@@ -138,12 +138,14 @@ $ docker exec <container> rconcli -a loalhost:25575 -p <rcon_password> <server_c
 If you are further interested in the usage and details of the RCON cli, take a look [**here of the Github project**](https://github.com/zekroTJA/rconclient).
 
 ## Backup
-Backups can be created automatically before a server start. 
+
+Backups can be created automatically before a server start.
 For this, a Docker secret must be stored in /run/secrets/rcloneconfig.  
 rclone is used. The target is `minecraft:/`  
 Rclone offers a number of very different destinations. In this example, an S3 endpoint with a specific subdirectory is used.
 
 Example config:
+
 ```txt
 [contabo]
 type = s3
@@ -157,10 +159,19 @@ endpoint = https://eu2.contabostorage.com/
 type = alias
 remote = contabo:/minecraft-server
 ```
+
 This configuration must now be loaded into the container as a secret.
 Target file is ``/run/secrets/rcloneconfig``.
 If the target file is found, the backup starts each container start.
 
+### Envs for Backup Settings
+
+For exact details please refer to ``backup.sh``.
+``BACKUP_FILE_FORMAT``:
+This can be used to specify the backup file name.
+It uses the date command line tool to interpret the placeholder varibales(``date ${BACKUP_FILE_FORMAT}``). ``.zip`` will be always added.  
+``MAX_AGE_BACKUP_FILES``:
+Specify the maximum length of time a backup file should be kept. One backup file is always kept.
 
 ---
 
