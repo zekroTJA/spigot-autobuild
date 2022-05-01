@@ -141,8 +141,8 @@ If you are further interested in the usage and details of the RCON cli, take a l
 
 Backups can be created automatically before a server start.
 For this, a Docker secret must be stored in /run/secrets/rcloneconfig.  
-rclone is used. The target is `minecraft:/`  
-Rclone offers a number of very different destinations. In this example, an S3 endpoint with a specific subdirectory is used.
+rclone is used. The default target is `minecraft:/`  
+Rclone offers a number of very [different destinations](https://rclone.org/overview/). In this example, an S3 endpoint with a specific subdirectory is used.
 
 Example config:
 
