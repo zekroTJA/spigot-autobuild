@@ -18,8 +18,8 @@ if [ -f /run/secrets/rcloneconfig ]; then
 
         # Rclone move
         printf "\n[${CYAN} INFO ${RESET}] Start uploading of backup $FILENAME\n"
-        rclone --config /run/secrets/rcloneconfig move "${WDIR}/$FILENAME" minecraft:/ -v &&
-            rclone --config /run/secrets/rcloneconfig --min-age $MAX_AGE_BACKUP_FILES delete minecraft:/ -v
+        rclone --config /run/secrets/rcloneconfig move "${WDIR}/$FILENAME" $BACKUP_TARGET -v &&
+            rclone --config /run/secrets/rcloneconfig --min-age $MAX_AGE_BACKUP_FILES delete $BACKUP_TARGET -v
 
         # Delete WDIR
         rm -rf "$WDIR"
