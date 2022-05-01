@@ -11,7 +11,7 @@ if [ -f /run/secrets/rcloneconfig ]; then
         printf "\n[${CYAN} INFO ${RESET}] Starting backup\n"
         mkdir -p "$WDIR"
 
-        FILENAME="$(date ${BACKUP_FILE_FORMAT}).zip"
+        FILENAME="$1-$(date ${BACKUP_FILE_FORMAT}).zip"
 
         # Start zipping server
         zip -9rq "${WDIR}/$FILENAME" "/etc/mcserver/"

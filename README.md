@@ -169,7 +169,7 @@ If the target file is found, the backup starts each container start.
 For exact details please refer to ``backup.sh``.
 ``BACKUP_FILE_FORMAT``:
 This can be used to specify the backup file name.
-It uses the date command line tool to interpret the placeholder varibales(``date ${BACKUP_FILE_FORMAT}``). ``.zip`` will be always added.  
+It uses the date command line tool to interpret the placeholder varibales(``date ${BACKUP_FILE_FORMAT}``).  
 ``MAX_AGE_BACKUP_FILES``:
 Specify the maximum length of time a backup file should be kept. One backup file is always kept.
 
