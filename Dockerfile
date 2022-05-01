@@ -14,7 +14,7 @@ RUN pyinstaller rconclient/main.py --onefile
 FROM openjdk:${JDK_VERSION}-jdk-bullseye AS final
 
 LABEL maintainer="zekro <contact@zekro.de>" \
-      version="2.0.0" \
+      version="2.1.0" \
       description="Minecraft spigot dockerized autobuilding latest version on startup"
 
 COPY --from=build /build/rcon/dist/main /usr/bin/rconcli
