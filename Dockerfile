@@ -33,6 +33,7 @@ ENV POST_START_BACKUP="true"
 ENV BACKUP_FILE_FORMAT="+%Y-%m-%d-%H-%M-%S"
 ENV MAX_AGE_BACKUP_FILES="30d"
 ENV BACKUP_TARGET="minecraft:/"
+ENV NOTICE=""
 
 #################################################
 

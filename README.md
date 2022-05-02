@@ -54,6 +54,7 @@ services:
       - 'BUILD_CACHING=true'
       - 'XMS=2G'
       - 'XMX=4G'
+      - 'NOTICE=Personal note for this minecraft server'
     ports:
       - '25565:25565'
       - '25575:25575'
