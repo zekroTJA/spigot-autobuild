@@ -40,6 +40,12 @@ version: '3'
 
 services:
   #...
+
+# Comment out for automatic backups. See section backup
+#secrets:
+#  minecraftrclone:
+#    file: rclone.conf
+
   spigot:
     image: 'zekro/spigot-autobuild:latest'
     restart: always
@@ -48,6 +54,7 @@ services:
       - 'BUILD_CACHING=true'
       - 'XMS=2G'
       - 'XMX=4G'
+      - 'NOTICE=Personal note for this minecraft server'
     ports:
       - '25565:25565'
       - '25575:25575'
@@ -56,7 +63,9 @@ services:
       - './spigot/plugins:/etc/mcserver/plugins'
       - './spigot/worlds:/etc/mcserver/worlds'
       - './spigot/locals:/etc/mcserver/locals'
-
+#    secrets: # Comment out for automatic backups. See section backup
+#      - source: minecraftrclone
+#        target: rcloneconfig
 ```
 
 ## Version Selection
@@ -128,6 +137,50 @@ $ docker exec <container> rconcli -a loalhost:25575 -p <rcon_password> <server_c
 ```
 
 If you are further interested in the usage and details of the RCON cli, take a look [**here of the Github project**](https://github.com/zekroTJA/rconclient).
+
+## Backup
+
+Backups can be created automatically before a server start.
+For this, a Docker secret must be stored in /run/secrets/rcloneconfig.  
+rclone is used. The default target is `minecraft:/`  
+Rclone offers a number of very [different destinations](https://rclone.org/overview/). In this example, an S3 endpoint with a specific subdirectory is used.
+
+Example config:
+
+```txt
+[contabo]
+type = s3
+provider = Other
+env_auth = false
+access_key_id = access_key
+secret_access_key = secret_key
+endpoint = https://eu2.contabostorage.com/
+
+[minecraft]
+type = alias
+remote = contabo:/minecraft-server
+```
+
+This configuration must now be loaded into the container as a secret.
+Target file is ``/run/secrets/rcloneconfig``.
+If the target file is found, the backup starts each container start.
+
+### Envs for Backup Settings
+
+For exact details please refer to ``backup.sh``.
+
+- ``BACKUP_FILE_FORMAT``:
+This can be used to specify the backup timestamp.
+It uses the date command line tool to interpret the placeholder varibales(``date ${BACKUP_FILE_FORMAT}``).  
+- ``BACKUP_TARGET``: Rclone backup target name
+- ``MAX_AGE_BACKUP_FILES``:
+Specify the maximum length of time a backup file should be kept. One backup file is always kept.
+- ``POST_START_BACKUP``: Enable backup after server stop
+- ``PRE_START_BACKUP``: Enable pre start backup  
+
+### Why pre and post backups
+
+The pre backups are necessary because the post backups are only executed when the Minecraft server shuts down by itself, for example by a ``/stop`` command. A Docker stop or Docker kill does not execute the backup anymore
 
 ---
 
