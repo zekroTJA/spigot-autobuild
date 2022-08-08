@@ -1,26 +1,42 @@
 ARG JDK_VERSION="17"
 ARG PYTHON_VERSION_TAG="3.7-stretch"
+ARG GOLANG_VERSION_TAG="1.18-stretch"
+
+# --- BUILD HEALTHCHECK TOOL STAGE -----------------------------------------------------------------
+
+FROM golang:${GOLANG_VERSION_TAG} AS healthcheck-build
+WORKDIR /build
+
+RUN apt-get install git
+RUN git clone https://github.com/evolvedpacks/healthcheck --branch master --depth 1 .
+RUN go build -v -o healthcheck ./cmd/healthcheck/main.go
+
+# --- BUILD RCON CLIENT ----------------------------------------------------------------------------
 
 FROM python:${PYTHON_VERSION_TAG} as build
-
 WORKDIR /build/rcon
 
 RUN git clone https://github.com/zekroTJA/rconclient \
-      --branch master --depth 1 .
+    --branch master --depth 1 .
 RUN python3 -m pip install -r requirements.txt &&\
     python3 -m pip install pyinstaller
 RUN pyinstaller rconclient/main.py --onefile
 
+# --- FINAL IMAGE STAGE ----------------------------------------------------------------------------
+
 FROM openjdk:${JDK_VERSION}-jdk-bullseye AS final
 
 LABEL maintainer="zekro <contact@zekro.de>" \
-      version="2.1.0" \
-      description="Minecraft spigot dockerized autobuilding latest version on startup"
+    version="2.1.0" \
+    description="Minecraft spigot dockerized autobuilding latest version on startup"
 
 COPY --from=build /build/rcon/dist/main /usr/bin/rconcli
 RUN chmod +x /usr/bin/rconcli
 
-### VARIABLES ###################################
+COPY --from=healthcheck-build /build/healthcheck /usr/bin/healthcheck
+# 90 Retries * 10s -> 15 Minutes Startup Time Assumption
+HEALTHCHECK --interval=10s --timeout=10s --retries=90 \
+    CMD /usr/bin/healthcheck -addr localhost:25565 -validateResponse
 
 ENV MC_VERSION="latest" \
     XMS="1G" \
@@ -35,16 +51,14 @@ ENV MAX_AGE_BACKUP_FILES="30d"
 ENV BACKUP_TARGET="minecraft:/"
 ENV NOTICE=""
 
-#################################################
-
 RUN apt-get update -y &&\
     apt-get install -y \
-      curl \
-      git \
-      dos2unix \
-      jq \
-      zip \ 
-      rclone
+    curl \
+    git \
+    dos2unix \
+    jq \
+    zip \ 
+    rclone
 
 RUN mkdir -p /var/mcserver &&\
     mkdir -p /etc/mcserver/worlds &&\
