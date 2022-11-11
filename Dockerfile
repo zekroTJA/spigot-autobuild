@@ -1,5 +1,5 @@
 ARG JDK_VERSION="17"
-ARG PYTHON_VERSION_TAG="3.7-stretch"
+ARG RUST_VERSION_TAG="1-buster"
 ARG GOLANG_VERSION_TAG="1.18-stretch"
 
 # --- BUILD HEALTHCHECK TOOL STAGE -----------------------------------------------------------------
@@ -13,14 +13,12 @@ RUN go build -v -o healthcheck ./cmd/healthcheck/main.go
 
 # --- BUILD RCON CLIENT ----------------------------------------------------------------------------
 
-FROM python:${PYTHON_VERSION_TAG} as build
+FROM rust:${RUST_VERSION_TAG} AS build
 WORKDIR /build/rcon
 
-RUN git clone https://github.com/zekroTJA/rconclient \
-    --branch master --depth 1 .
-RUN python3 -m pip install -r requirements.txt &&\
-    python3 -m pip install pyinstaller
-RUN pyinstaller rconclient/main.py --onefile
+RUN git clone https://github.com/zekroTJA/rconcli \
+    --branch main --depth 1 .
+RUN cargo build --release 
 
 # --- FINAL IMAGE STAGE ----------------------------------------------------------------------------
 
@@ -30,7 +28,7 @@ LABEL maintainer="zekro <contact@zekro.de>" \
     version="2.1.0" \
     description="Minecraft spigot dockerized autobuilding latest version on startup"
 
-COPY --from=build /build/rcon/dist/main /usr/bin/rconcli
+COPY --from=build /build/rcon/target/release/rconcli /usr/bin/rconcli
 RUN chmod +x /usr/bin/rconcli
 
 COPY --from=healthcheck-build /build/healthcheck /usr/bin/healthcheck
