@@ -13,3 +13,12 @@ function is_true {
     fi
     return 1
 }
+
+function notify() {
+  script="$1"
+
+  if [ -n "$script" ]; then
+    export MESSAGE="$2"
+    bash -c "$script"
+  fi
+}

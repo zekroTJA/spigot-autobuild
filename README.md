@@ -171,12 +171,21 @@ For exact details please refer to ``backup.sh``.
 
 - ``BACKUP_FILE_FORMAT``:
 This can be used to specify the backup timestamp.
-It uses the date command line tool to interpret the placeholder varibales(``date ${BACKUP_FILE_FORMAT}``).  
+It uses the date command line tool to interpret the placeholder varibales (``date ${BACKUP_FILE_FORMAT}``).  
 - ``BACKUP_TARGET``: Rclone backup target name
 - ``MAX_AGE_BACKUP_FILES``:
 Specify the maximum length of time a backup file should be kept. One backup file is always kept.
 - ``POST_START_BACKUP``: Enable backup after server stop
 - ``PRE_START_BACKUP``: Enable pre start backup  
+- ``BACKUP_SUCCESS_SCRIPT``: Will be executed when the backup creation was successful.
+- ``BACKUP_FAILED_SCRIPT``: Will be executed when the backup creation has failed.
+
+An example for a `BACKUP_FAILED_SCRIPT` could look as following.
+```
+curl -u "user:password" -d "$MESSAGE" "https://ntfy.example.com/minecraft_backups?title=Backup%Failed"
+```
+
+The `$MESSAGE` environment variable will contain the stdout and stderr from the backup script.
 
 ### Why pre and post backups
 
