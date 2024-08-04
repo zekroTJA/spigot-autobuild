@@ -20,6 +20,7 @@ jobs:
           - "11"
           - "16"
           - "17"
+          - "21"
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
