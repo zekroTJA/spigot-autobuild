@@ -97,6 +97,13 @@ Version `1.17` (not `1.17.X`) is only executable with Java 16 (no LTS).
 
 ### JDK-17
 - 1.17.1
+- 1.18
+- 1.19
+- 1.20
+
+### JDK-21
+- 1.20
+- 1.21
 
 ## Build Caching?
 
